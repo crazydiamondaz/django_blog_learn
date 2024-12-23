@@ -5,3 +5,4 @@ static/
 article/__pycache__
 article/migrations/__pycache__/
 my_blog/__pycache__
+__pycache__/
