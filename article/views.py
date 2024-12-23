@@ -40,6 +40,19 @@ def article_create(request):
         context = {'article_post_form': article_post_form}
         return render(request, 'article/create.html', context)
 
+def article_delete(request,id):
+    article = ArticlePost.objects.get(id=id)
+    article.delete()
+    return redirect("article:article_list")
+
+def article_safe_delete(request,id):
+    if request.method == 'POST':
+        article = ArticlePost.objects.get(id=id)
+        article.delete()
+        return redirect("article:article_list")
+    else:
+        return HttpResponse("Use POST Method please.")
+
 
 
 
