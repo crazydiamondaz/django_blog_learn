@@ -53,6 +53,21 @@ def article_safe_delete(request,id):
     else:
         return HttpResponse("Use POST Method please.")
 
+def article_update(request,id):
+    article = ArticlePost.objects.get(id=id)
+    if request.method == "POST":
+        article_post_form = ArticlePostForm(data=request.POST)
+        if article_post_form.is_valid():
+            article.title = request.POST['title']
+            article.body = request.POST['body']
+            article.save()
+            return redirect("article:article_detail",id=id)
+        else:
+            return HttpResponse("Wrong content. Please refill the form.")
+    else:
+        article_post_form = ArticlePostForm()
+        context = {'article':article, 'article_post_form':article_post_form}
+        return render(request,'article/update.html',context)
 
 
 
