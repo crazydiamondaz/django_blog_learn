@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
-from .forms import UserLoginForm
+from .forms import UserLoginForm,UserRegisterForm
 
 # Create your views here.
 
@@ -28,3 +28,19 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect("article:article_list")
+
+def user_register(request):
+    if request.method == 'POST':
+        user_register_form = UserRegisterForm(data=request.POST)
+        if user_register_form.is_valid():
+            new_user = user_register_form.save()
+            login(request,new_user)
+            return redirect("article:article_list")
+        else:
+            return HttpResponse("Form is wrong, please input again.")
+    elif request.method == 'GET':
+        user_register_form = UserRegisterForm()
+        context = {'form': user_register_form}
+        return render(request,'userprofile/register.html',context)
+    else:
+        return HttpResponse("Please use GET or POST to get the data.")
