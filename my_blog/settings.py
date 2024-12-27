@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'article',
     'userprofile',
     'bootstrap4',
+    'password_reset',
 ]
 
 MIDDLEWARE = [
@@ -116,7 +117,12 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_HOST_USER = 'crazydiamond123@qq.com'
+EMAIL_HOST_PASSWORD = 'tycpgjkatbvsbjjh'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Crazydiamond\'s blog <crazydiamond123@qq.com>'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
