@@ -28,7 +28,7 @@ def article_create(request):
             # save the data and don't save it to the database
             new_article = article_post_form.save(commit=False)
             # point the id=1 User as the Author
-            new_article.author = User.objects.get(id=1)
+            new_article.author = User.objects.get(username='crazydiamond')
             # save the article to the dataset
             new_article.save()
             return redirect("article:article_list")
