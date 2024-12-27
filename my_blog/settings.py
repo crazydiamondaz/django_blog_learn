@@ -119,7 +119,7 @@ USE_TZ = True
 
 EMAIL_HOST = 'smtp.qq.com'
 EMAIL_HOST_USER = 'crazydiamond123@qq.com'
-EMAIL_HOST_PASSWORD = 'tycpgjkatbvsbjjh'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Crazydiamond\'s blog <crazydiamond123@qq.com>'
