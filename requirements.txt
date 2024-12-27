@@ -2,3 +2,4 @@ django-bootstrap4
 Django==2.2
 django-password-reset
 markdown
+Pillow

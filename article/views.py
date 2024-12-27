@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import ArticlePost
 from .forms import ArticlePostForm
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 import markdown
 # Create your views here.
 def article_list(request):
@@ -18,6 +19,7 @@ def article_detail(request,id):
     context = {'article' : article}
     return render(request,'article/detail.html',context)
 
+@login_required(login_url='/userprofile/login/')
 def article_create(request):
     # if User Submit article
     if request.method == "POST":
@@ -28,7 +30,7 @@ def article_create(request):
             # save the data and don't save it to the database
             new_article = article_post_form.save(commit=False)
             # point the id=1 User as the Author
-            new_article.author = User.objects.get(username='crazydiamond')
+            new_article.author = User.objects.get(id=request.user.id)
             # save the article to the dataset
             new_article.save()
             return redirect("article:article_list")
