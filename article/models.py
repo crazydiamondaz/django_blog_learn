@@ -12,7 +12,7 @@ class ArticlePost(models.Model):
     total_views = models.PositiveIntegerField(default=0)
 
     class Meta:
-        ordering = ("-created",)
+        ordering = ('-updated',)
 
     def __str__(self):
         return self.title

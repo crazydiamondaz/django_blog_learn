@@ -6,14 +6,20 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 import markdown
 from django.core.paginator import Paginator
+from django.db.models import Q
 # Create your views here.
 def article_list(request):
     # articles = ArticlePost.objects.all()
-    article_list = ArticlePost.objects.all()
+    if request.GET.get('order') == 'total_views':
+        article_list = ArticlePost.objects.all().order_by('-total_views')
+        order = 'total_views'
+    else:
+        article_list = ArticlePost.objects.all()
+        order = 'normal'
     paginator = Paginator(article_list,6)
     page = request.GET.get('page')
     articles = paginator.get_page(page)
-    context = {'articles':articles}
+    context = {'articles': articles,'order': order}
     return render(request,'article/list.html',context)
 
 def article_detail(request,id):
