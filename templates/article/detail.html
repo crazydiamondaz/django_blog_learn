@@ -12,6 +12,13 @@
 
 <!-- details of article -->
 <div class="container">
+    <div class="col-3 mt-4">
+        <h4><strong>Index</strong></h4>
+        <hr>
+        <div>
+            {{ toc|safe }}
+        </div>
+    </div>
     <div class="row">
         <!-- title and author -->
 <!--        <h1 class="col-12 mt-4 mb-4">{{ article.title }}</h1>-->
@@ -19,35 +26,39 @@
 <!--            <a href='#' onclick="confirm_safe_delete()" style="margin-right: 10px;">删除文章</a>-->
 <!--            <a href="{% url "article:article_update" article.id %}">编辑文章</a>-->
         <!-- Add a hidden form -->
-        <div class="col-12 alert alert-success">
-            <div>
-                Author：{{ article.author }}
-                {% if user == article.author %}
-                    · <a href="#" onclick="confirm_delete()">Delete article</a>
-                    · <a href="{% url "article:article_update" article.id %}">
-                        Edit article
-                    </a>
-                {% endif %}
+        <div class="col-9">
+            <h1 class="mt-4 mb-4">{{ article.title}}</h1>
+            <div class="col-12 alert alert-success">
+                <div>
+                    Author：{{ article.author }}
+                    {% if user == article.author %}
+                        · <a href="#" onclick="confirm_delete()">Delete article</a>
+                        · <a href="{% url "article:article_update" article.id %}">
+                            Edit article
+                        </a>
+                    {% endif %}
+                </div>
+                <div>
+                    Views：{{ article.total_views }}
+                </div>
             </div>
-            <div>
-                Views：{{ article.total_views }}
-            </div>
-        </div>
-        <form
-              style="display:none;"
-              id="safe_delete"
-              action="{% url 'article:article_safe_delete' article.id %}"
-              method="POST"
-              >
-            {% csrf_token %}
-            <button type="submit">发送</button>
-        </form>
+            <form
+                  style="display:none;"
+                  id="safe_delete"
+                  action="{% url 'article:article_safe_delete' article.id %}"
+                  method="POST"
+                  >
+                {% csrf_token %}
+                <button type="submit">Submit</button>
+            </form>
 
-        <!-- 文章正文 -->
-        <div class="col-12">
-            <p>{{ article.body|safe }}</p>
+            <!-- 文章正文 -->
+            <div class="col-12">
+                <p>{{ article.body|safe }}</p>
+            </div>
         </div>
     </div>
+
 </div>
 
 <script>

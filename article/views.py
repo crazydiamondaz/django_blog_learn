@@ -45,10 +45,11 @@ def article_detail(request,id):
     article = ArticlePost.objects.get(id=id)
     article.total_views += 1
     article.save(update_fields=['total_views'])
-    article.body = markdown.markdown(article.body,
-                                     extensions=['markdown.extensions.extra',
-                                                 'markdown.extensions.codehilite',])
-    context = {'article' : article}
+    md = markdown.Markdown(extensions=['markdown.extensions.extra',
+                                        'markdown.extensions.codehilite',
+                                        'markdown.extensions.toc',])
+    article.body = md.convert(article.body)
+    context = {'article' : article, 'toc' : md.toc}
     return render(request,'article/detail.html',context)
 
 @login_required(login_url='/userprofile/login/')
