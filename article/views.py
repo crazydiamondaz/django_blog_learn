@@ -5,9 +5,14 @@ from .forms import ArticlePostForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 import markdown
+from django.core.paginator import Paginator
 # Create your views here.
 def article_list(request):
-    articles = ArticlePost.objects.all()
+    # articles = ArticlePost.objects.all()
+    article_list = ArticlePost.objects.all()
+    paginator = Paginator(article_list,6)
+    page = request.GET.get('page')
+    articles = paginator.get_page(page)
     context = {'articles':articles}
     return render(request,'article/list.html',context)
 
