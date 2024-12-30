@@ -15,17 +15,38 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'article:article_list' %}">
+                <a href="{% url 'article:article_list' %}?search= {{ search }}">
                     latest
                 </a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'article:article_list' %}?order=total_views">
+                <a href="{% url 'article:article_list' %}?order=total_views&search={{ search }}">
                     hottest
                 </a>
             </li>
         </ol>
     </nav>
+    <div class="row">
+        <div class="col-auto mr-auto">
+            <form class="form-inline">
+                <label class="sr-only">content</label>
+                <input type="text"
+                    class = "form-control mb-2 mr-sm-2"
+                    name = "search"
+                    placeholder="Search article..."
+                    required>
+            </form>
+        </div>
+    </div>
+    {% if search %}
+        {% if articles %}
+            <h4><span style="color: red">"{{ search }}"</span>'s results are here:</h4>
+            <hr>
+        {% else %}
+            <h4> There are no articles about <span style="color: red">"{{ search }}"</span> .</h4>
+            <hr>
+        {% endif %}
+    {% endif %}
     <div class="row mt-2">
 
         {% for article in articles %}
@@ -59,11 +80,11 @@
         <span class="step-links">
             <!-- 如果不是第一页，则显示上翻按钮 -->
             {% if articles.has_previous %}
-                <a href="?page=1&order={{ order }}" class="btn btn-success">
+                <a href="?page=1&order={{ order }}&search={{ search }}" class="btn btn-success">
                     &laquo; 1
                 </a>
                 <span>...</span>
-                <a href="?page={{ articles.previous_page_number }}&order={{ order }}"
+                <a href="?page={{ articles.previous_page_number }}&order={{ order }}&search={{ search }}"
                    class="btn btn-secondary"
                 >
                     {{ articles.previous_page_number }}
@@ -77,13 +98,13 @@
 
             <!-- 如果不是最末页，则显示下翻按钮 -->
             {% if articles.has_next %}
-                <a href="?page={{ articles.next_page_number }}&order={{ order }}"
+                <a href="?page={{ articles.next_page_number }}&order={{ order }}&search={{ search }}"
                    class="btn btn-secondary"
                 >
                     {{ articles.next_page_number }}
                 </a>
                 <span>...</span>
-                <a href="?page={{ articles.paginator.num_pages }}&order={{ order }}"
+                <a href="?page={{ articles.paginator.num_pages }}&order={{ order }}&search={{ search }}"
                    class="btn btn-success"
                 >
                     {{ articles.paginator.num_pages }} &raquo;
