@@ -7,12 +7,25 @@
             <br>
             <div class="col-md-4">Username: {{ user.username }}</div>
             <br>
-            <form method="post" action=".">
+            <form method="post" action="." enctype="multipart/form-data">
                 {% csrf_token %}
                 <!-- phone -->
                 <div class="form-group col-md-4">
                     <label for="phone">Tel</label>
                     <input type="text" class="form-control" id="phone" name="phone" value="{{ profile.phone }}">
+                </div>
+                {% if profile.avatar %}
+                    <div class="col-md-4">头像</div>
+                    <img src="{{ profile.avatar.url }}" style="max-width: 20%; border-radius: 15%;" class="col-md-4">
+                {% else %}
+                    <h5 class="col-md-4">暂无头像</h5>
+                {% endif %}
+                <br>
+                <br>
+                <!-- avatar -->
+                <div class="form-group">
+                    <label for="avatar">上传头像</label>
+                    <input type="file" class="form-control-file" name="avatar" id="avatar">
                 </div>
                 <!-- bio -->
                 <div class="form-group col-md-4">
