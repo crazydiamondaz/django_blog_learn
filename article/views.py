@@ -18,6 +18,8 @@ def article_list(request):
 
 def article_detail(request,id):
     article = ArticlePost.objects.get(id=id)
+    article.total_views += 1
+    article.save(update_fields=['total_views'])
     article.body = markdown.markdown(article.body,
                                      extensions=['markdown.extensions.extra',
                                                  'markdown.extensions.codehilite',])
@@ -47,12 +49,19 @@ def article_create(request):
         context = {'article_post_form': article_post_form}
         return render(request, 'article/create.html', context)
 
+
+@login_required(login_url='/userprofile/login/')
 def article_delete(request,id):
     article = ArticlePost.objects.get(id=id)
+    if request.user != article.author:
+        return HttpResponse("Sorry, you can't delete this article.")
     article.delete()
     return redirect("article:article_list")
-
+@login_required(login_url='/userprofile/login/')
 def article_safe_delete(request,id):
+    article = ArticlePost.objects.get(id=id)
+    if request.user != article.author:
+        return HttpResponse("Sorry, you can't delete this article.")
     if request.method == 'POST':
         article = ArticlePost.objects.get(id=id)
         article.delete()
@@ -60,8 +69,11 @@ def article_safe_delete(request,id):
     else:
         return HttpResponse("Use POST Method please.")
 
+@login_required(login_url='/userprofile/login/')
 def article_update(request,id):
     article = ArticlePost.objects.get(id=id)
+    if request.user != article.author:
+        return HttpResponse("Sorry, you can't edit this article.")
     if request.method == "POST":
         article_post_form = ArticlePostForm(data=request.POST)
         if article_post_form.is_valid():

@@ -27,7 +27,12 @@
                 </div>
                 <!-- 注脚 -->
                 <div class="card-footer">
-                     <a href="{% url 'article:article_detail' article.id %}" class="btn btn-primary">阅读本文</a>
+                     <a href="{% url 'article:article_detail' article.id %}" class="btn btn-primary">Read this article</a>
+                    <span>
+                        <small class = "col align-self-end" sytle="color: gray;">
+                            Views: {{ article.total_views }}
+                        </small>
+                    </span>
                 </div>
             </div>
         </div>

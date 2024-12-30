@@ -1,24 +1,38 @@
-<!-- extends表明此页面继承自 base.html 文件 -->
+<!-- extends shows inherit from base.html -->
 {% extends "base.html" %}
 {% load staticfiles %}
 
-<!-- 写入 base.html 中定义的 title -->
+<!-- title in base.html -->
 {% block title %}
-    文章详情
+    Details of article
 {% endblock title %}
 
-<!-- 写入 base.html 中定义的 content -->
+<!-- content in bae.html -->
 {% block content %}
 
-<!-- 文章详情 -->
+<!-- details of article -->
 <div class="container">
     <div class="row">
-        <!-- 标题及作者 -->
-        <h1 class="col-12 mt-4 mb-4">{{ article.title }}</h1>
-        <div class="col-12 alert alert-success">作者：{{ article.author }}</div>
-            <a href='#' onclick="confirm_safe_delete()" style="margin-right: 10px;">删除文章</a>
-            <a href="{% url "article:article_update" article.id %}">编辑文章</a>
-        <!-- 新增一个隐藏的表单 -->
+        <!-- title and author -->
+<!--        <h1 class="col-12 mt-4 mb-4">{{ article.title }}</h1>-->
+<!--        <div class="col-12 alert alert-success">作者：{{ article.author }}</div>-->
+<!--            <a href='#' onclick="confirm_safe_delete()" style="margin-right: 10px;">删除文章</a>-->
+<!--            <a href="{% url "article:article_update" article.id %}">编辑文章</a>-->
+        <!-- Add a hidden form -->
+        <div class="col-12 alert alert-success">
+            <div>
+                Author：{{ article.author }}
+                {% if user == article.author %}
+                    · <a href="#" onclick="confirm_delete()">Delete article</a>
+                    · <a href="{% url "article:article_update" article.id %}">
+                        Edit article
+                    </a>
+                {% endif %}
+            </div>
+            <div>
+                Views：{{ article.total_views }}
+            </div>
+        </div>
         <form
               style="display:none;"
               id="safe_delete"
