@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import ArticlePost
+from .models import ArticlePost,ArticleColumn
 from .forms import ArticlePostForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -67,6 +67,8 @@ def article_create(request):
             # point the id=1 User as the Author
             new_article.author = User.objects.get(id=request.user.id)
             # save the article to the dataset
+            if request.POST['column'] != 'none':
+                new_article.column = ArticleColumn.objects.get(id=request.POST['COLUMN'])
             new_article.save()
             return redirect("article:article_list")
         # if the data is illegal, return error information
@@ -74,7 +76,8 @@ def article_create(request):
             return HttpResponse("Wrong content. Please refill the form.")
     else:
         article_post_form = ArticlePostForm()
-        context = {'article_post_form': article_post_form}
+        columns = ArticleColumn.objects.all()
+        context = {'article_post_form': article_post_form,'columns':columns}
         return render(request, 'article/create.html', context)
 
 
@@ -107,13 +110,18 @@ def article_update(request,id):
         if article_post_form.is_valid():
             article.title = request.POST['title']
             article.body = request.POST['body']
+            if request.POST['column'] != 'none':
+                article.column = ArticleColumn.objects.get(id=request.POST['column'])
+            else:
+                article.column = None
             article.save()
             return redirect("article:article_detail",id=id)
         else:
             return HttpResponse("Wrong content. Please refill the form.")
     else:
         article_post_form = ArticlePostForm()
-        context = {'article':article, 'article_post_form':article_post_form}
+        columns = ArticleColumn.objects.all()
+        context = {'article':article, 'article_post_form':article_post_form,'columns':columns,}
         return render(request,'article/update.html',context)
 
 

@@ -48,31 +48,57 @@
         {% endif %}
     {% endif %}
     <div class="row mt-2">
-
         {% for article in articles %}
-        <!-- 文章内容 -->
-        <div class="col-4 mb-4">
-        <!-- 卡片容器 -->
-            <div class="card h-100">
-                <!-- 标题 -->
-                <h4 class="card-header">{{ article.title }}</h4>
-                <!-- 摘要 -->
-                <div class="card-body">
-                    <p class="card-text">{{ article.body|slice:'100' }}...</p>
+            <!-- Article Content -->
+            <div class="col-12">
+                <!-- Column -->
+                {% if article.column %}
+                    <button type="button"
+                        class="btn btn-sm mb-2
+                            {% if article.column.title == 'pet' %}
+                                btn-success
+                            {% elif article.column.title == 'technique' %}
+                                btn-danger
+                            {% elif article.column.title == 'life' %}
+                                btn-warning
+                            {% endif %}
+                        "
+                    >
+                        {{ article.column }}
+                    </button>
+                {% endif %}
+                <!-- title -->
+                <h4>
+                    <b>
+                        <a href="{% url 'article:article_detail' article.id %}"
+                           style="color: black;"
+                        >
+                            {{ article.title }}
+                        </a>
+                    </b>
+                </h4>
+                <!-- summary -->
+                <div>
+                    <p style="color: gray;">
+                        {{ article.body|slice:'100' }}...
+                    </p>
                 </div>
-                <!-- 注脚 -->
-                <div class="card-footer">
-                     <a href="{% url 'article:article_detail' article.id %}" class="btn btn-primary">Read this article</a>
-                    <span>
-                        <small class = "col align-self-end" sytle="color: gray;">
-                            Views: {{ article.total_views }}
-                        </small>
+                <!-- footer -->
+                <p>
+                    <!-- Additional information -->
+                    <span style="color: green;">
+                        {{ article.total_views }} Views&nbsp;&nbsp;&nbsp;
                     </span>
-                </div>
+                    <span style="color: blue;">
+                        {{ article.created|date:'Y-m-d' }} Post&nbsp;&nbsp;&nbsp;
+                    </span>
+                    <span style="color: darkred;">
+                        {{ article.updated|date:'Y-m-d' }} Update
+                    </span>
+                </p>
+                <hr>
             </div>
-        </div>
         {% endfor %}
-
     </div>
 </div>
 <div class="pagination row">
