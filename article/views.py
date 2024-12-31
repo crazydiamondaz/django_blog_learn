@@ -80,7 +80,7 @@ def article_create(request):
     # if User Submit article
     if request.method == "POST":
         # store the data into Form Entity
-        article_post_form = ArticlePostForm(data=request.POST)
+        article_post_form = ArticlePostForm(request.POST,request.FILES)
         # Check the legality of the data
         if article_post_form.is_valid():
             # save the data and don't save it to the database

@@ -49,6 +49,14 @@
     {% endif %}
     <div class="row mt-2">
         {% for article in articles %}
+            {% if article.avatar %}
+                <div class="col-3">
+                    <img src="{{ article.avatar.url }}"
+                         alt="avatar"
+                         style="max-width:100%; border-radius: 20px"
+                    >
+                </div>
+            {% endif %}
             <!-- Article Content -->
             <div class="col-12">
                 <!-- Column -->
