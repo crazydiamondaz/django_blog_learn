@@ -130,6 +130,10 @@ def article_update(request,id):
     if request.method == "POST":
         article_post_form = ArticlePostForm(data=request.POST)
         if article_post_form.is_valid():
+            if request.FILES.get('avatar'):
+                article.avatar = request.FILES.get('avatar')
+            # print(*request.POST.get('tags').split(','))
+            # article.tags.set(*request.POST.get('tags').split(','), clear=True)
             article.title = request.POST['title']
             article.body = request.POST['body']
             if request.POST['column'] != 'none':
@@ -143,7 +147,8 @@ def article_update(request,id):
     else:
         article_post_form = ArticlePostForm()
         columns = ArticleColumn.objects.all()
-        context = {'article':article, 'article_post_form':article_post_form,'columns':columns,}
+        context = {'article':article, 'article_post_form':article_post_form,'columns':columns,
+                   'tags':','.join([x for x in article.tags.names()]),}
         return render(request,'article/update.html',context)
 
 
