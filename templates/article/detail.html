@@ -56,6 +56,62 @@
             <div class="col-12">
                 <p>{{ article.body|safe }}</p>
             </div>
+            <!-- post comment -->
+            <hr>
+                {% if user.is_authenticated %}
+                    <div>
+                        <form
+                            action="{% url 'comment:post_comment' article.id %}"
+                            method="POST"
+                        >
+                        {% csrf_token %}
+                            <div class="form-group">
+                                <label for="body">
+                                    <strong>
+                                        Comment：
+                                    </strong>
+                                </label>
+                                <textarea
+                                    type="text"
+                                    class="form-control"
+                                    id="body"
+                                    name="body"
+                                    rows="2"></textarea>
+                            </div>
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary ">Submit</button>
+                        </form>
+                    </div>
+                    <br>
+                {% else %}
+                    <br>
+                    <h5 class="row justify-content-center">
+                        Please <a href="{% url 'userprofile:login' %}">Login</a> then comment
+                    </h5>
+                    <br>
+                {% endif %}
+
+
+
+                <!-- display comment -->
+                <h4>There are {{ comments.count }} comments</h4>
+                <div>
+                    {% for comment in comments %}
+                        <hr>
+                        <p>
+                            <strong style="color: pink">
+                                {{ comment.user }}
+                            </strong> at
+                            <span style="color: green">
+                                {{ comment.created|date:"Y-m-d H:i:s" }}
+                            </span> comment：
+                        </p>
+                        <pre style="font-family: inherit; font-size: 1em;">
+            {{ comment.body }}</pre>
+                    {% endfor %}
+                </div>
+            </div>
+
         </div>
     </div>
 
