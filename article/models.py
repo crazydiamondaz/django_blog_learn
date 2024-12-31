@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
+from taggit.managers import TaggableManager
 # Create your models here.
 
 class ArticleColumn(models.Model):
@@ -17,6 +18,7 @@ class ArticlePost(models.Model):
         on_delete=models.CASCADE,
         related_name='article'
     )
+    tags = TaggableManager(blank=True)
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     body = models.TextField()

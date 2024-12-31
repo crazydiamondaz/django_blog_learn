@@ -12,24 +12,40 @@ from comment.models import Comment
 def article_list(request):
     search = request.GET.get('search')
     order = request.GET.get('order')
+    column = request.GET.get('column')
+    tag = request.GET.get('tag')
+
+    article_list = ArticlePost.objects.all()
     if search:
-        if order == 'total_views':
-            # Use Q object to do joint research
-            article_list = ArticlePost.objects.filter(
-                Q(title__icontains=search) |
-                Q(body__icontains=search)
-            ).order_by('-total_views')
-        else:
-            article_list = ArticlePost.objects.filter(
-                Q(title__icontains=search) |
-                Q(body__icontains=search)
-            )
+        article_list = article_list.filter(
+            Q(title__icontains=search) |
+            Q(body__icontains=search)
+        )
     else:
         search = ''
-        if order == 'total_views':
-            article_list = ArticlePost.objects.all().order_by('-total_views')
-        else:
-            article_list = ArticlePost.objects.all()
+    if column is not None and column.isdigit():
+        article_list = article_list.filter(column=column)
+    if tag and tag != 'None':
+        article_list = article_list.filter(tags__name__in=[tag])
+    if order == 'total_views':
+        article_list = article_list.order_by('-total_views')
+    #     if order == 'total_views':
+    #         # Use Q object to do joint research
+    #         article_list = ArticlePost.objects.filter(
+    #             Q(title__icontains=search) |
+    #             Q(body__icontains=search)
+    #         ).order_by('-total_views')
+    #     else:
+    #         article_list = ArticlePost.objects.filter(
+    #             Q(title__icontains=search) |
+    #             Q(body__icontains=search)
+    #         )
+    # else:
+    #     search = ''
+    #     if order == 'total_views':
+    #         article_list = ArticlePost.objects.all().order_by('-total_views')
+    #     else:
+    #         article_list = ArticlePost.objects.all()
     # if request.GET.get('order') == 'total_views':
     #     article_list = ArticlePost.objects.all().order_by('-total_views')
     #     order = 'total_views'
@@ -39,7 +55,12 @@ def article_list(request):
     paginator = Paginator(article_list,6)
     page = request.GET.get('page')
     articles = paginator.get_page(page)
-    context = {'articles': articles,'order': order,'search':search}
+    context = {'articles': articles,
+               'order': order,
+               'search':search,
+               'column':column,
+               'tag':tag,
+               }
     return render(request,'article/list.html',context)
 
 def article_detail(request,id):
@@ -68,8 +89,9 @@ def article_create(request):
             new_article.author = User.objects.get(id=request.user.id)
             # save the article to the dataset
             if request.POST['column'] != 'none':
-                new_article.column = ArticleColumn.objects.get(id=request.POST['COLUMN'])
+                new_article.column = ArticleColumn.objects.get(id=request.POST['column'])
             new_article.save()
+            article_post_form.save_m2m()
             return redirect("article:article_list")
         # if the data is illegal, return error information
         else:

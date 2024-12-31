@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'password_reset',
     'comment',
+    'taggit',
 ]
 
 MIDDLEWARE = [

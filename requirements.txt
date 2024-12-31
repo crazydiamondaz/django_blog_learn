@@ -3,3 +3,4 @@ Django==2.2
 django-password-reset
 markdown
 Pillow
+django-taggit
