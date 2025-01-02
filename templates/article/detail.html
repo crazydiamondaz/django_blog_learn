@@ -7,18 +7,10 @@
     Details of article
 {% endblock title %}
 
-<!-- content in bae.html -->
+<!-- content in base.html -->
 {% block content %}
-
 <!-- details of article -->
 <div class="container">
-    <div class="col-3 mt-4">
-        <h4><strong>Index</strong></h4>
-        <hr>
-        <div>
-            {{ toc|safe }}
-        </div>
-    </div>
     <div class="row">
         <!-- title and author -->
 <!--        <h1 class="col-12 mt-4 mb-4">{{ article.title }}</h1>-->
@@ -115,12 +107,44 @@
                     {% endfor %}
                 </div>
             </div>
+            <div ... id="sidebar" class="sidebar">
+                <div class="sidebar__inner">
+                    <h4><strong>目录</strong></h4>
+                    <hr>
+                    <div>
+                        {{ toc|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
 
         </div>
     </div>
 
 </div>
 
+<style>
+    .sidebar{
+        will-change: min-height;
+    }
+
+    .sidebar__inner{
+        transform: translate(0, 0);
+        transform: translate3d(0, 0, 0);
+        will-change: position, transform;
+    }
+</style>
+
+{% endblock content %}
+{% block script %}
+<!-- 引入粘性侧边栏 -->
+<script src="{% static 'sticky_sidebar/jquery.sticky-sidebar.min.js' %}"></script>
+<script type="text/javascript">
+    $('#sidebar').stickySidebar({
+        topSpacing: 20,
+        bottomSpacing: 20,
+    });
+</script>
 <script>
     function confirm_delete(){
         layer.open({
@@ -145,4 +169,5 @@
 <script>
     $(".django-ckeditor-widget").removeAttr('style');
 </script>
-{% endblock content %}
+
+{% endblock script %}
