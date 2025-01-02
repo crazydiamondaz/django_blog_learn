@@ -71,12 +71,16 @@
                                         Comment：
                                     </strong>
                                 </label>
-                                <textarea
-                                    type="text"
-                                    class="form-control"
-                                    id="body"
-                                    name="body"
-                                    rows="2"></textarea>
+<!--                                <textarea-->
+<!--                                    type="text"-->
+<!--                                    class="form-control"-->
+<!--                                    id="body"-->
+<!--                                    name="body"-->
+<!--                                    rows="2"></textarea>-->
+                                <div>
+                                    {{ comment_form.media }}
+                                    {{ comment_form.body }}
+                                </div>
                             </div>
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary ">Submit</button>
@@ -106,8 +110,8 @@
                                 {{ comment.created|date:"Y-m-d H:i:s" }}
                             </span> comment：
                         </p>
-                        <pre style="font-family: inherit; font-size: 1em;">
-            {{ comment.body }}</pre>
+<!--                        <pre style="font-family: inherit; font-size: 1em;">{{ comment.body }}</pre>-->
+                        <div>{{ comment.body|safe }}</div>
                     {% endfor %}
                 </div>
             </div>
@@ -138,5 +142,8 @@
     })
 }
 </script>
-
+{% block script}
+<script>
+    $(".django-ckeditor-widget").removeAttr('style');
+</script>
 {% endblock content %}
