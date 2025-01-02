@@ -1,6 +1,5 @@
 *.sqlite3
 venv/
-static/
 .idea/
 article/__pycache__
 article/migrations/__pycache__/
