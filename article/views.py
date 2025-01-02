@@ -132,8 +132,7 @@ def article_update(request,id):
         if article_post_form.is_valid():
             if request.FILES.get('avatar'):
                 article.avatar = request.FILES.get('avatar')
-            # print(*request.POST.get('tags').split(','))
-            # article.tags.set(*request.POST.get('tags').split(','), clear=True)
+            article.tags.set(request.POST.get('tags').split(','), clear=True)
             article.title = request.POST['title']
             article.body = request.POST['body']
             if request.POST['column'] != 'none':
