@@ -191,7 +191,7 @@
             </div>
             <div ... id="sidebar" class="sidebar">
                 <div class="sidebar__inner">
-                    <h4><strong>目录</strong></h4>
+                    <h4><strong>Index</strong></h4>
                     <hr>
                     <div>
                         {{ toc|safe }}
@@ -230,8 +230,8 @@
 <script>
     function confirm_delete(){
         layer.open({
-            title:"确认删除",
-            content:"确认删除这篇文章吗？",
+            title:"Confirm deletion",
+            content:"Are you sure you want to delete this article?",
             yes: function (index,layero) {
                 location.href='{% url "article:article_delete" article.id %}'
             },
@@ -239,8 +239,8 @@
     }
     function confirm_safe_delete() {
     layer.open({
-        title: "确认删除",
-        content: "确认删除这篇文章吗？",
+        title: "Confirm deletion",
+        content: "Are you sure you want to delete this article?",
         yes: function(index, layero) {
             $('form#safe_delete button').click();
             layer.close(index);
